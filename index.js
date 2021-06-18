@@ -62,6 +62,8 @@ async function run() {
       check.output.summary = 'All tasks have been completed';
     };
 
+    console.log({outstandingTasks})
+
     // send check back to GitHub
     await octokit.rest.checks.create({...github.context.repo, ...check});
   } catch (error) {
