@@ -25,44 +25,48 @@ function checkOutstandingTasks(body) {
   };
 };
 
-try {
-  const startTime = (new Date).toISOString();
-  const GITHUB_TOKEN = core.getInput('github-token');
-  if (!GITHUB_TOKEN) {
-    throw "Missing github-token input";
-  }
-  if (!['pull_request', 'pull_request_review', 'pull_request_review_comment'].includes(github.context.eventName)) {
-    throw `Being invoked for non-PR event "${github.context.eventName}"`;
-  }
-
-  const octokit = github.getOctokit(GITHUB_TOKEN);
-  const pr = github.context.payload.pull_request
-
-  const prDescription = github.context.payload.pull_request.body;
-  const outstandingTasks = checkOutstandingTasks(prDescription);
-
-  let check = {
-    name: 'task-list-checker',
-    head_sha: pr.head.sha,
-    started_at: startTime,
-    status: 'in_progress',
-    output: {
-      title: (outstandingTasks.total - outstandingTasks.remaining) + ' / ' + outstandingTasks.total + ' tasks completed',
-      summary: outstandingTasks.remaining + ' task' + (outstandingTasks.remaining > 1 ? 's' : '') + ' still to be completed',
-      text: 'We check if any task lists need completing before you can merge this PR'
+async function run() {
+  try {
+    const startTime = (new Date).toISOString();
+    const GITHUB_TOKEN = core.getInput('github-token');
+    if (!GITHUB_TOKEN) {
+      throw "Missing github-token input";
     }
-  }
-  
-  // all finished?
-  if (outstandingTasks.remaining === 0) {
-    check.status = 'completed';
-    check.conclusion = 'success';
-    check.completed_at = (new Date).toISOString();
-    check.output.summary = 'All tasks have been completed';
-  };
+    if (!['pull_request', 'pull_request_review', 'pull_request_review_comment'].includes(github.context.eventName)) {
+      throw `Being invoked for non-PR event "${github.context.eventName}"`;
+    }
 
-  // send check back to GitHub
-  octokit.rest.checks.create({...github.context.repo, check});
-} catch (error) {
-  core.setFailed(error.message);
+    const octokit = github.getOctokit(GITHUB_TOKEN);
+    const pr = github.context.payload.pull_request
+
+    const prDescription = github.context.payload.pull_request.body;
+    const outstandingTasks = checkOutstandingTasks(prDescription);
+
+    let check = {
+      name: 'task-list-checker',
+      head_sha: pr.head.sha,
+      started_at: startTime,
+      status: 'in_progress',
+      output: {
+        title: (outstandingTasks.total - outstandingTasks.remaining) + ' / ' + outstandingTasks.total + ' tasks completed',
+        summary: outstandingTasks.remaining + ' task' + (outstandingTasks.remaining > 1 ? 's' : '') + ' still to be completed',
+        text: 'We check if any task lists need completing before you can merge this PR'
+      }
+    }
+    
+    // all finished?
+    if (outstandingTasks.remaining === 0) {
+      check.status = 'completed';
+      check.conclusion = 'success';
+      check.completed_at = (new Date).toISOString();
+      check.output.summary = 'All tasks have been completed';
+    };
+
+    // send check back to GitHub
+    await octokit.rest.checks.create({...github.context.repo, check});
+  } catch (error) {
+    core.setFailed(error.message);
+  }
 }
+
+run()
