@@ -1,0 +1,14 @@
+{
+  "name": "task-list-checker",
+  "version": "0.0.1",
+  "description": "GitHub Action for checking for incomplete task list items in PRs",
+  "main": "index.js",
+  "repository": "https://github.com/ashfurrow/task-list-checker.git",
+  "author": "Ash Furrow <ash.furrow@shopify.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@actions/core": "^1.4.0",
+    "@actions/github": "^5.0.0"
+  }
+}

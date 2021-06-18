@@ -1,0 +1,5 @@
+name: "Task List Checker"
+description: "GitHub Action for checking for incomplete task list items in PRs"
+runs:
+  using: "node12"
+  main: "index.js"
