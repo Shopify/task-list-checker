@@ -63,7 +63,7 @@ async function run() {
     };
 
     // send check back to GitHub
-    await octokit.rest.checks.create({...github.context.repo, check});
+    await octokit.rest.checks.create({...github.context.repo, ...check});
   } catch (error) {
     core.setFailed(error.message);
   }
