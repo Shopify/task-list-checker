@@ -1,5 +1,9 @@
 name: "Task List Checker"
 description: "GitHub Action for checking for incomplete task list items in PRs"
+inputs:
+  github-token:
+    description: GitHub token from Action workflow context
+    required: true
 runs:
   using: "node12"
   main: "index.js"
