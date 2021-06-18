@@ -49,7 +49,7 @@ async function run() {
     const outstandingTasks = checkOutstandingTasks(prDescription);
 
     let check = {
-      name: 'task-list-checker',
+      name: 'check-for-incomplete-tasks',
       head_sha: pr.head.sha,
       started_at: startTime,
       status: 'in_progress',
