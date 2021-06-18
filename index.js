@@ -13,17 +13,21 @@ function checkOutstandingTasks(body) {
       };
   }
   
-  let tokens = marked.lexer(body, { gfm: true });
-  // TODO: TypeScript isn't inferring the type of this correct, figure out why
+  const tokens = marked.lexer(body, { gfm: true });
   /** @type marked.Tokens.ListItem[] */
-  // @ts-ignore I don't know why this isn't behaving but whatever.
-  let listItems =  tokens.filter(token => token.type === 'list_item');
+  const listItems = tokens.reduce((acc, token) => {
+    if (token.type !== 'list') {
+      return acc
+    }
+    return [...acc, ...token.items]
+  }, [])
+
   console.log({listItems})
-  
+
   // return counts of task list items and how many are left to be completed
   return {
-      total: listItems.filter(item => item.checked !== undefined).length,
-      remaining: listItems.filter(item => item.checked === false).length
+    total: listItems.filter(item => item.checked !== undefined).length,
+    remaining: listItems.filter(item => item.checked === false).length
   };
 };
 
