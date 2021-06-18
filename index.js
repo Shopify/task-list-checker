@@ -18,6 +18,8 @@ function checkOutstandingTasks(body) {
   /** @type marked.Tokens.ListItem[] */
   // @ts-ignore I don't know why this isn't behaving but whatever.
   let listItems =  tokens.filter(token => token.type === 'list_item');
+  console.log({listItems})
+  
   // return counts of task list items and how many are left to be completed
   return {
       total: listItems.filter(item => item.checked !== undefined).length,
@@ -39,7 +41,7 @@ async function run() {
     const octokit = github.getOctokit(GITHUB_TOKEN);
     const pr = github.context.payload.pull_request
 
-    const prDescription = github.context.payload.pull_request.body;
+    const prDescription = pr.body;
     const outstandingTasks = checkOutstandingTasks(prDescription);
 
     let check = {
@@ -62,7 +64,7 @@ async function run() {
       check.output.summary = 'All tasks have been completed';
     };
 
-    console.log({outstandingTasks})
+    console.log({prDescription, outstandingTasks})
 
     // send check back to GitHub
     await octokit.rest.checks.create({...github.context.repo, ...check});
