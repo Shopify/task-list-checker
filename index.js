@@ -52,7 +52,7 @@ async function run() {
       name: 'check-for-incomplete-tasks',
       head_sha: pr.head.sha,
       started_at: startTime,
-      status: 'in_progress',
+      conclusion: 'failure',
       output: {
         title: (outstandingTasks.total - outstandingTasks.remaining) + ' / ' + outstandingTasks.total + ' tasks completed',
         summary: outstandingTasks.remaining + ' task' + (outstandingTasks.remaining > 1 ? 's' : '') + ' still to be completed',
@@ -62,7 +62,6 @@ async function run() {
     
     // all finished?
     if (outstandingTasks.remaining === 0) {
-      check.status = 'completed';
       check.conclusion = 'success';
       check.completed_at = (new Date).toISOString();
       check.output.summary = 'All tasks have been completed';
