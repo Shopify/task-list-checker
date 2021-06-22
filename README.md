@@ -11,6 +11,7 @@ Here are the features we want, and their status:
 - [ ] Looks for incomplete tasks in the pull request review bodies.
 - [ ] Looks for incomplete tasks in the pull request review comment bodies.
 - [ ] Adds links to the pull request's Checks page to the incomplete items.
+- [ ] Updates existing [check run](https://docs.github.com/en/rest/reference/checks#runs) (if it exists) rather than creating a new one each time.
 
 ## Usage
 
