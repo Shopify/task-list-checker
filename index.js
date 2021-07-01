@@ -32,8 +32,6 @@ function checkOutstandingTasks(body) {
 };
 
 async function run() {
-  console.log('exiting with code 1 immediately')
-  process.exit(1)
   try {
     const startTime = (new Date).toISOString();
     const GITHUB_TOKEN = core.getInput('github-token');
@@ -73,6 +71,11 @@ async function run() {
 
     // send check back to GitHub
     await octokit.rest.checks.create({...github.context.repo, ...check});
+
+    if (outstandingTasks.remaining > 0) {
+      console.log('Exiting with code 1 after creating check')
+      process.exit(1)
+    }
   } catch (error) {
     core.setFailed(error.message);
   }
