@@ -49,7 +49,7 @@ async function run() {
     const outstandingTasks = checkOutstandingTasks(prDescription);
 
     let check = {
-      name: 'task-list-checker',
+      name: 'check-for-incomplete-tasks',
       head_sha: pr.head.sha,
       started_at: startTime,
       conclusion: 'failure',
@@ -70,7 +70,9 @@ async function run() {
     console.log({prDescription, outstandingTasks})
 
     // send check back to GitHub
-    await octokit.rest.checks.create({...github.context.repo, ...check});
+    // Testing update
+    // await octokit.rest.checks.create({...github.context.repo, ...check});
+    await octokit.rest.checks.update({...github.context.repo, ...check});
 
     if (outstandingTasks.remaining > 0) {
       console.log('Exiting with code 1 after creating check')
