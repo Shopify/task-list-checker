@@ -70,13 +70,10 @@ async function run() {
     console.log({prDescription, outstandingTasks})
 
     // send check back to GitHub
-    // Testing update
-    // await octokit.rest.checks.create({...github.context.repo, ...check});
-    await octokit.rest.checks.update({...github.context.repo, ...check});
+    await octokit.rest.checks.create({...github.context.repo, ...check});
 
     if (outstandingTasks.remaining > 0) {
-      console.log('Exiting with code 1 after creating check')
-      process.exit(1)
+      core.setFailed(`Testing core.setFailed output: ${check.output.summary}`)
     }
   } catch (error) {
     core.setFailed(error.message);
