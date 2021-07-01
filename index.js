@@ -32,13 +32,13 @@ function checkOutstandingTasks(body) {
 };
 
 async function run() {
+  throw 'Throwing immediately, without catching'
   try {
     const startTime = (new Date).toISOString();
     const GITHUB_TOKEN = core.getInput('github-token');
     if (!GITHUB_TOKEN) {
       throw "Missing github-token input";
     }
-    const RUN_ID = core.getInput('run-id')
     if (!['pull_request', 'pull_request_review', 'pull_request_review_comment'].includes(github.context.eventName)) {
       throw `Being invoked for non-PR event "${github.context.eventName}"`;
     }
@@ -68,7 +68,6 @@ async function run() {
       check.output.summary = 'All tasks have been completed';
     };
 
-    console.log(`run-id: ${RUN_ID}`)
     console.log({prDescription, outstandingTasks})
 
     // send check back to GitHub
