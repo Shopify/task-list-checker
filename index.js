@@ -32,7 +32,8 @@ function checkOutstandingTasks(body) {
 };
 
 async function run() {
-  throw 'Throwing immediately, without catching'
+  console.log('exiting with code 1 immediately')
+  process.exit(1)
   try {
     const startTime = (new Date).toISOString();
     const GITHUB_TOKEN = core.getInput('github-token');
