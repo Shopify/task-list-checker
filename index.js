@@ -4,25 +4,18 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const marked = require('marked');
 
-function nestedChecklistItems(tokens) {
-  /** @type Array<{checked: boolean; ourText: string}> */
+function extractChecklistItems(body) {
+  const tokens = marked.lexer(body, { gfm: true });
   let checklistItems = []
-  function addNestedChecklistItems(tokens) {
-    tokens.forEach(token => {
-      if (token.type === 'list') {
-        addNestedChecklistItems(token.items)
-      } else {
-        if (token.checked === true || token.checked === false) {
-          const ourText = token.tokens
-            .filter(token => token.type !== 'list')
-            .map(token => token.text).join()
-          checklistItems = checklistItems.concat({checked: token.checked, ourText})
-        }
-        addNestedChecklistItems(token.tokens)
-      }
-    })
-  }
-  addNestedChecklistItems(tokens)
+  marked.walkTokens(tokens, token => {
+    if (token.type !== 'list_item') return
+    if (token.checked === true || token.checked === false) {
+      const ourText = token['tokens']
+        .filter(token => token.type !== 'list')
+        .map(token => token.text).join()
+      checklistItems = checklistItems.concat({checked: token.checked, ourText})
+    }
+  })
   return checklistItems
 }
 
@@ -35,23 +28,13 @@ function checkOutstandingTasks(body, skipTokens) {
           skipped: 0
       };
   }
-  
-  const tokens = marked.lexer(body, { gfm: true });
-  let checklistItems = []
-  marked.walkTokens(tokens, token => {
-    if (token.type !== 'list_item') return
-    if (token.checked === true || token.checked === false) {
-      const ourText = token['tokens']
-        .filter(token => token.type !== 'list')
-        .map(token => token.text).join()
-      checklistItems = checklistItems.concat({checked: token.checked, ourText})
-    }
-  })
 
-  console.log({checklistItems})
+  const checklistItems = extractChecklistItems(body)
   const prunedItems = checklistItems.filter(item => skipTokens.filter(
     token => item.ourText.includes(token)
   ).length == 0)
+
+  console.log({checklistItems, prunedItems})
 
   // return counts of task list items and how many are left to be completed
   return {
