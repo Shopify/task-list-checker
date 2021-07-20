@@ -31,7 +31,7 @@ function checkOutstandingTasks(body, skipTokens) {
   return {
     total: prunedItems.filter(item => item.checked !== undefined).length,
     remaining: prunedItems.filter(item => item.checked === false).length,
-    skipped: (listItems.length - prunedItems.length) ?? 0
+    skipped: (listItems.length - prunedItems.length)
   };
 };
 
