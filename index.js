@@ -5,7 +5,7 @@ const github = require('@actions/github');
 const marked = require('marked');
 
 // This function taken from https://github.com/stilliard/github-task-list-completed/blob/master/src/check-outstanding-tasks.js
-function checkOutstandingTasks(body) {
+function checkOutstandingTasks(body, skipTokens) {
   if (body === null) {
       return {
           total: 0,
@@ -23,11 +23,15 @@ function checkOutstandingTasks(body) {
   }, [])
 
   console.log({listItems})
+  const prunedItems = listItems.filter(item => skipTokens.filter(
+    token => item.text.includes(token)
+  ).length == 0)
 
   // return counts of task list items and how many are left to be completed
   return {
-    total: listItems.filter(item => item.checked !== undefined).length,
-    remaining: listItems.filter(item => item.checked === false).length
+    total: prunedItems.filter(item => item.checked !== undefined).length,
+    remaining: prunedItems.filter(item => item.checked === false).length,
+    skipped: (listItems.length - prunedItems.length) ?? 0
   };
 };
 
@@ -45,17 +49,18 @@ async function run() {
     const pr = github.context.payload.pull_request
 
     const prDescription = pr.body;
-    const outstandingTasks = checkOutstandingTasks(prDescription);
+    const skipTokens = ['POST-MERGE:', 'N/A']
+    const outstandingTasks = checkOutstandingTasks(prDescription, skipTokens);
 
     console.log({prDescription, outstandingTasks})
 
-    // TODO: include more help in the description
+    const skipTags = skipTokens.map(token => '"' + token + '"').join(' or ')
     await octokit.rest.repos.createCommitStatus({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
       sha: pr.head.sha,
       state: (outstandingTasks.remaining > 0) ? 'pending' : 'success',
-      description: (outstandingTasks.total - outstandingTasks.remaining) + '/' + outstandingTasks.total + ' checklist items in the PR description have been completed',
+      description: (outstandingTasks.total - outstandingTasks.remaining) + '/' + outstandingTasks.total + ' checklist items completed. Ignored ' + outstandingTasks.skipped + ' items (tagged with ' + skipTags + ')',
       context: 'task-list-checker',
     })
   } catch (error) {
