@@ -9,7 +9,8 @@ function checkOutstandingTasks(body, skipTokens) {
   if (body === null) {
       return {
           total: 0,
-          remaining: 0
+          remaining: 0,
+          skipped: 0
       };
   }
   
@@ -22,7 +23,7 @@ function checkOutstandingTasks(body, skipTokens) {
     return [...acc, ...token.items]
   }, [])
 
-  console.log({listItems})
+  console.log(JSON.stringify({listItems}))
   const prunedItems = listItems.filter(item => skipTokens.filter(
     token => item.text.includes(token)
   ).length == 0)
