@@ -1,9 +1,8 @@
-// @ts-check
-const core = require('@actions/core')
-const runner = require('./utils/runner')
+import * as core from '@actions/core'
+import {reportChecklistCompletion} from './utils/runner'
 
 try {
-  runner.reportChecklistCompletion({
+  reportChecklistCompletion({
     githubToken: core.getInput('github-token'),
     skipTags: ['POST-MERGE:', 'N/A']
   })
