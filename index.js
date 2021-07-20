@@ -60,7 +60,7 @@ async function run() {
       repo: github.context.repo.repo,
       sha: pr.head.sha,
       state: (outstandingTasks.remaining > 0) ? 'pending' : 'success',
-      description: (outstandingTasks.total - outstandingTasks.remaining) + '/' + outstandingTasks.total + ' checklist items completed. ' + outstandingTasks.skipped + ' skipped (tagged ' + skipTags + ').',
+      description: (outstandingTasks.total - outstandingTasks.remaining) + '/' + outstandingTasks.total + ' tasks checked. ' + outstandingTasks.skipped + ' skipped (tagged ' + skipTags + ').',
       context: 'task-list-checker',
     })
   } catch (error) {
