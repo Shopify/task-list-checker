@@ -61,7 +61,7 @@ async function run() {
       sha: pr.head.sha,
       state: (outstandingTasks.remaining > 0) ? 'pending' : 'success',
       description: (outstandingTasks.total - outstandingTasks.remaining) + '/' + outstandingTasks.total + ' tasks [x]; ' + outstandingTasks.skipped + ' skipped (tagged ' + skipTags + ')',
-      context: 'task-list-checker',
+      context: 'Checklist Completion',
     })
   } catch (error) {
     core.setFailed(error.message);
