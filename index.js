@@ -48,7 +48,7 @@ function checkOutstandingTasks(body, skipTokens) {
     }
   })
 
-  console.log(JSON.stringify({checklistItems}))
+  console.log({checklistItems})
   const prunedItems = checklistItems.filter(item => skipTokens.filter(
     token => item.ourText.includes(token)
   ).length == 0)
