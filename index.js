@@ -41,8 +41,8 @@ async function run() {
     if (!GITHUB_TOKEN) {
       throw "Missing github-token input";
     }
-    if (!['pull_request', 'pull_request_review', 'pull_request_review_comment'].includes(github.context.eventName)) {
-      throw `Being invoked for non-PR event "${github.context.eventName}"`;
+    if (!['pull_request'].includes(github.context.eventName)) {
+      throw `Being invoked for an event that does not change the PR description "${github.context.eventName}"`;
     }
 
     const octokit = github.getOctokit(GITHUB_TOKEN);
