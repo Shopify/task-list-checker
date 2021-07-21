@@ -2,6 +2,8 @@
 const extract = require('./extract')
 const tagging = require('./tagging')
 
+module.exports = {outstandingTasks}
+
 // This function taken from https://github.com/stilliard/github-task-list-completed/blob/master/src/check-outstanding-tasks.js
 /**
  * @typedef {{total: number; remaining: number; skipped: number}} OutstandingTasks
@@ -10,7 +12,7 @@ const tagging = require('./tagging')
  * @param {tagging.Rule} rule 
  * @returns {OutstandingTasks}
  */
-export function outstandingTasks(body, rule) {
+function outstandingTasks(body, rule) {
     console.log({body})
 
     if (body === undefined) return {total: 0, remaining: 0, skipped: 0}

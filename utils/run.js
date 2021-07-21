@@ -3,10 +3,12 @@ const github = require('@actions/github')
 const output = require('./output')
 const tagging = require('./tagging')
 
+module.exports = {reportChecklistCompletion}
+
 /**
  * @param {{githubToken: string; rule: tagging.Rule}} input 
  */
-export async function reportChecklistCompletion({githubToken, rule}) {
+async function reportChecklistCompletion({githubToken, rule}) {
     const validEvents = ['pull_request']
     const {eventName} = github.context
 

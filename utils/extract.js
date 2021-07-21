@@ -1,13 +1,15 @@
 // @ts-check
 const marked = require('marked')
 
+module.exports = {checklistItems}
+
 /**
  * @typedef {{checked: boolean; text: string}} ChecklistItem
  * 
  * @param {string} body 
  * @returns {ChecklistItem[]}
  */
-export function checklistItems(body) {
+function checklistItems(body) {
     const githubFlavoredMarkdown = true
     const tokens = marked.lexer(body, {gfm: githubFlavoredMarkdown})
 

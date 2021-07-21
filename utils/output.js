@@ -2,6 +2,8 @@
 const comment = require('./comment')
 const tagging = require('./tagging')
 
+module.exports = {completion}
+
 /**
  * @typedef {'pending' | 'success'} State
  * 
@@ -9,7 +11,7 @@ const tagging = require('./tagging')
  * @param {tagging.Rule} rule 
  * @returns {{state: State; description: string; context: string}}
  */
-export function completion(pr, rule) {
+function completion(pr, rule) {
     const outstandingTasks = comment.outstandingTasks(pr.body, rule)
     console.log({outstandingTasks})
 

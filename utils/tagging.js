@@ -1,5 +1,7 @@
 // @ts-check
 
+module.exports = {rule}
+
 /**
  * @typedef {{text: string}} TaggableItem
  * @typedef {{skipExplanation: string; include(item: TaggableItem): boolean}} Rule
@@ -7,7 +9,7 @@
  * @param {{skip: string[]}} input
  * @returns {Rule}
  */
-export function rule({skip: tags}) {
+function rule({skip: tags}) {
     return {
         skipExplanation: skipExplanation({skipping: tags}),
         include: item => matching({tags, in: item}).length === 0
