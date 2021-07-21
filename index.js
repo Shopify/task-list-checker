@@ -17,6 +17,7 @@ function input(name) {
 try {
   run.reportChecklistCompletion({
     githubToken: input('github-token'),
+    readmeURL: 'https://github.com/ashfurrow/task-list-checker#in-a-pull-request',
     rule: tagging.rule({skip: ['POST-MERGE:', 'N/A']})
   })
 } catch (error) {

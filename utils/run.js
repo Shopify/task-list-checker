@@ -6,9 +6,9 @@ const tagging = require('./tagging')
 module.exports = {reportChecklistCompletion}
 
 /**
- * @param {{githubToken: string; rule: tagging.Rule}} input 
+ * @param {{githubToken: string; readmeURL: string; rule: tagging.Rule}} input 
  */
-async function reportChecklistCompletion({githubToken, rule}) {
+async function reportChecklistCompletion({githubToken, readmeURL: target_url, rule}) {
     const validEvents = ['pull_request']
     const {eventName} = github.context
 
@@ -21,6 +21,6 @@ async function reportChecklistCompletion({githubToken, rule}) {
 
     const {owner, repo, sha} = {...github.context.repo, sha: pr.head.sha}
     await octokit.rest.repos.createCommitStatus({
-        owner, repo, sha, ...output.completion(pr, rule)
+        owner, repo, sha, target_url, ...output.completion(pr, rule)
     })
 }
