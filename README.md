@@ -22,7 +22,9 @@ jobs:
 ```
 
 ### In a pull request
-The job will look for checkboxes **in the PR description only**. Checkboxes in comments are ignored, since scattering tasks throughout the PR makes it harder for authors/reviewers to find the remaining tasks. If a task is related to a specific comment, add the task to the PR description with a link to the relevant comment.
+When a PR is first opened, and any time the description is edited (including automatic edits triggered by clicking on a checkbox), `task-list-checker` will count the checked and unchecked checkboxes in the description. If any tasks are unchecked, it will set the PR's status to `pending`, blocking merge.
+
+Checkboxes in comments are ignored, since scattering tasks throughout the PR makes it harder for authors/reviewers to locate the remaining tasks. If a task is related to a specific file or comment, add the checkbox to the PR description with a link out to the relevant location.
 
 Any checkbox containing the text **N/A** (all caps) will be skipped; use this to tag tasks that are not relevant to the current PR. Ex:
 ```
@@ -51,15 +53,7 @@ Uninflated checkboxes in code blocks or tables are ignored. Nested checkboxes, i
 > - [ ] or in a block quote
 
 ## Project Status
-Here are the features we want, and their status:
-
-- [x] Marks pull requests as pending when there are incomplete task list items.
-- [x] Looks for incomplete task list items in pull request bodies.
-- [x] ~Looks for incomplete tasks in the pull request review bodies.~ N/A, staying in the PR description solves a variety of problems
-- [x] ~Looks for incomplete tasks in the pull request review comment bodies.~ N/A, staying in the PR description solves a variety of problems
-- [x] ~Adds links to the pull request's Checks page to the incomplete items.~ N/A, all checkboxes will be easily findable in the PR description
-- [ ] Updates existing [check run](https://docs.github.com/en/rest/reference/checks#runs) (if it exists) rather than creating a new one each time.
-- [x] ~When this is enabled, update the pull request template to explain how to strike through / remove irrelevant checkboxes~ N/A explanation included in the status message
+See [PROJECT_STATUS](PROJECT_STATUS.md) for the current todo list.
 
 ## License
 
