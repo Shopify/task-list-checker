@@ -4,16 +4,17 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const marked = require('marked');
 
+function textWithoutSublists(text) {
+  return text.split('\n')[0]
+}
+
 function extractChecklistItems(body) {
   const tokens = marked.lexer(body, { gfm: true });
   let checklistItems = []
   marked.walkTokens(tokens, token => {
     if (token.type !== 'list_item') return
     if (token.checked === true || token.checked === false) {
-      console.log({token})
-      const ourText = token['tokens']
-        .filter(token => token.type !== 'list')
-        .map(token => token.text).join()
+      const ourText = textWithoutSublists(token.text)
       checklistItems = checklistItems.concat({checked: token.checked, ourText})
     }
   })
