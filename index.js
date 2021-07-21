@@ -10,6 +10,7 @@ function extractChecklistItems(body) {
   marked.walkTokens(tokens, token => {
     if (token.type !== 'list_item') return
     if (token.checked === true || token.checked === false) {
+      console.log({token})
       const ourText = token['tokens']
         .filter(token => token.type !== 'list')
         .map(token => token.text).join()
