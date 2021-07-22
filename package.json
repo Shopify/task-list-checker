@@ -13,6 +13,11 @@
     "marked": "^2.1.1"
   },
   "devDependencies": {
-    "@types/marked": "^2.0.3"
+    "@types/jest": "^26.0.24",
+    "@types/marked": "^2.0.3",
+    "jest": "^27.0.6"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }

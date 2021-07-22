@@ -1,18 +1,16 @@
 // @ts-check
 const comment = require('./comment')
-const tagging = require('./tagging')
 
 module.exports = {completion}
 
 /**
  * @typedef {'pending' | 'success'} State
  * 
- * @param {{body?: string}} pr 
- * @param {tagging.Rule} rule 
+ * @param {comment.OutstandingTasks} outstandingTasks 
+ * @param {{skipExplanation: string}} rule 
  * @returns {{state: State; description: string; context: string}}
  */
-function completion(pr, rule) {
-    const outstandingTasks = comment.outstandingTasks(pr.body, rule)
+function completion(outstandingTasks, rule) {
     console.log({outstandingTasks})
 
     return {
@@ -32,7 +30,7 @@ function state({remaining}) {
 
 /**
  * @param {comment.OutstandingTasks} outstandingTasks
- * @param {tagging.Rule} rule
+ * @param {{skipExplanation: string}} rule
  * @return {string}
  */
 function description({total, remaining, skipped}, rule) {
