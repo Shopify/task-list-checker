@@ -8,16 +8,11 @@ module.exports = {outstandingTasks}
 /**
  * @typedef {{total: number; remaining: number; skipped: number}} OutstandingTasks
  * 
- * @param {string | undefined} body 
- * @param {tagging.Rule} rule 
+ * @param {extract.ChecklistItem[]} checklistItems 
+ * @param {{include(item: tagging.TaggableItem): boolean}} rule 
  * @returns {OutstandingTasks}
  */
-function outstandingTasks(body, rule) {
-    console.log({body})
-
-    if (body === undefined) return {total: 0, remaining: 0, skipped: 0}
-  
-    const checklistItems = extract.checklistItems(body)
+function outstandingTasks(checklistItems, rule) {
     const prunedItems = checklistItems.filter(rule.include)
   
     console.log({checklistItems, prunedItems})

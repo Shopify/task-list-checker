@@ -2,6 +2,8 @@
 const github = require('@actions/github')
 const output = require('./output')
 const tagging = require('./tagging')
+const extract = require('./extract')
+const comment = require('./comment')
 
 module.exports = {reportChecklistCompletion}
 
@@ -20,7 +22,9 @@ async function reportChecklistCompletion({githubToken, readmeURL: target_url, ru
     const pr = github.context.payload.pull_request
 
     const {owner, repo, sha} = {...github.context.repo, sha: pr.head.sha}
+    const tasks = comment.outstandingTasks(extract.checklistItems(pr.body), rule)
+
     await octokit.rest.repos.createCommitStatus({
-        owner, repo, sha, target_url, ...output.completion(pr, rule)
+        owner, repo, sha, target_url, ...output.completion(tasks, rule)
     })
 }
