@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check for incomplete task list items
-        uses: ashfurrow/task-list-checker@main
+        uses: Shopify/task-list-checker@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
