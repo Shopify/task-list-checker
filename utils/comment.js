@@ -15,8 +15,6 @@ module.exports = {outstandingTasks}
 function outstandingTasks(checklistItems, rule) {
     const prunedItems = checklistItems.filter(rule.include)
   
-    console.log({checklistItems, prunedItems})
-  
     return {
       total: prunedItems.length,
       remaining: prunedItems.filter(isUnchecked).length,

@@ -8,7 +8,7 @@ const tagging = require('./utils/tagging')
  * @param {'github-token'} name 
  * @returns {string}
  */
-function input(name) {
+function getInput(name) {
   const value = core.getInput(name)
   if (value === '') throw `Missing "${name}" input`
   return value
@@ -16,7 +16,7 @@ function input(name) {
 
 try {
   run.reportChecklistCompletion({
-    githubToken: input('github-token'),
+    githubToken: getInput('github-token'),
     readmeURL: 'https://github.com/Shopify/task-list-checker#in-a-pull-request',
     rule: tagging.rule({skip: ['POST-MERGE:', 'N/A']})
   })
