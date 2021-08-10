@@ -52,9 +52,6 @@ Uninflated checkboxes in code blocks or tables are ignored. Nested checkboxes, i
     - [ ] even if they're nested
 > - [ ] or in a block quote
 
-## Project Status
-See [PROJECT_STATUS](PROJECT_STATUS.md) for the current todo list.
-
 ## License
 
 MIT.

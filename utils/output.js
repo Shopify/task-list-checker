@@ -11,7 +11,7 @@ module.exports = {completion}
  * @returns {{state: State; description: string; context: string}}
  */
 function completion(outstandingTasks, rule) {
-    console.log({outstandingTasks})
+    console.info({outstandingTasks})
 
     return {
         state: state(outstandingTasks),

@@ -10,7 +10,6 @@ module.exports = {checklistItems}
  * @returns {ChecklistItem[]}
  */
 function checklistItems(body) {
-    console.log({body})
     if (body === undefined || body === null) return []
 
     const githubFlavoredMarkdown = true
