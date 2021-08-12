@@ -21,6 +21,10 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+In some cases, you may want to point PR authors toward additional documentation about checklist best practices for that repo. To do that, add a `readme-url` parameter underneath the `github-token` parameter. This will make `task-list-checker`'s "Details" link point toward your custom docs url.
+
+The `readme-url` parameter is optional. If omitted, the "Details" link will default to pointing toward this README file.
+
 ### In a pull request
 When a PR is first opened, and any time the description is edited (including automatic edits triggered by clicking on a checkbox), `task-list-checker` will count the checked and unchecked checkboxes in the description. If any tasks are unchecked, it will set the PR's status to `pending`, blocking merge.
 

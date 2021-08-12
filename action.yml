@@ -4,6 +4,9 @@ inputs:
   github-token:
     description: GitHub token from Action workflow context
     required: true
+  readme-url:
+    description: Custom documentation url (otherwise defaults to README)
+    required: false
 runs:
   using: "node12"
   main: "index.js"
