@@ -5,7 +5,7 @@ const run = require('./utils/run')
 const tagging = require('./utils/tagging')
 
 /**
- * @param {'github-token'} name 
+ * @param {'github-token' | 'readme-url'} name 
  * @returns {string}
  */
 function getInput(name) {
@@ -17,7 +17,7 @@ function getInput(name) {
 try {
   run.reportChecklistCompletion({
     githubToken: getInput('github-token'),
-    readmeURL: 'https://github.com/Shopify/task-list-checker#in-a-pull-request',
+    readmeURL: getInput('readme-url'),
     rule: tagging.rule({skip: ['POST-MERGE:', 'N/A']})
   })
 } catch (error) {

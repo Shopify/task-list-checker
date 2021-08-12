@@ -2,8 +2,12 @@ name: "Task List Checker"
 description: "GitHub Action for checking for incomplete task list items in PRs"
 inputs:
   github-token:
-    description: GitHub token from Action workflow context
+    description: "GitHub token from Action workflow context"
     required: true
+  readme-url:
+    description: "Custom documentation url (otherwise defaults to README)"
+    required: false
+    default: "https://github.com/Shopify/task-list-checker#in-a-pull-request"
 runs:
   using: "node12"
   main: "index.js"
