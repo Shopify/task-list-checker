@@ -5,12 +5,22 @@ const run = require('./utils/run')
 const tagging = require('./utils/tagging')
 
 /**
+ * @param {'github-token' | 'readme-url'} name
+ * @returns {string | undefined}
+ */
+function getOptionalInput(name) {
+  const value = core.getInput(name)
+  if (value === '') return undefined
+  else return value
+}
+
+/**
  * @param {'github-token'} name 
  * @returns {string}
  */
 function getRequiredInput(name) {
-  const value = core.getInput(name)
-  if (value === '') throw `Missing "${name}" input`
+  const value = getOptionalInput(name)
+  if (value === undefined) throw `Missing "${name}" input`
   return value
 }
 
@@ -18,7 +28,7 @@ function getRequiredInput(name) {
  * @returns {string}
  */
 function getReadmeURL() {
-  const custom = core.getInput('readme-url')
+  const custom = getOptionalInput('readme-url')
   return custom ?? 'https://github.com/Shopify/task-list-checker#in-a-pull-request'
 }
 
