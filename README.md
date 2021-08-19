@@ -10,7 +10,7 @@ Add this to your GitHub project by creating `.github/workflows/task-list-checker
 name: GitHub Task List Checker
 on:
   pull_request:
-    types: [opened, edited]
+    types: [opened, edited, synchronize, reopened]
 jobs:
   task-list-checker:
     runs-on: ubuntu-latest
