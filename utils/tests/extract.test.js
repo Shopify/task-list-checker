@@ -39,6 +39,13 @@ describe('extract', () => {
                 {text: 'Inflated checklist item', checked: true},
             ])
         })
+        it('should exclude items inside html comments', () => {
+            const body = "<!-- - [ ] Single line comment -->\n- [ ] Visible checklist item\n<!--\n- [ ] Commented out checklist item\n-->"
+            const items = extract.checklistItems(body)
+            expect(items).toStrictEqual([
+                {text: 'Visible checklist item', checked: false}
+            ])
+        })
         it('should gracefully handle empty bodies', () => {
             expect(extract.checklistItems('')).toStrictEqual([])
             expect(extract.checklistItems(undefined)).toStrictEqual([])
