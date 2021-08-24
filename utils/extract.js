@@ -35,7 +35,6 @@ function unroll(tokens) {
             unrolled = unrolled.concat(token)
         }
     })
-    console.log({unrolled})
     return unrolled
 }
 
