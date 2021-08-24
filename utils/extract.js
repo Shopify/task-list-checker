@@ -15,14 +15,14 @@ function checklistItems(body) {
     const githubFlavoredMarkdown = true
     const tokens = marked.lexer(body, {gfm: githubFlavoredMarkdown})
 
-    return unroll(tokens).flatMap(token => checkableItem(token))
+    return unrollSkippingHTMLComments(tokens).flatMap(token => checkableItem(token))
 }
 
 /**
  * @param {marked.TokensList} tokens
  * @returns {marked.Token[]}
  */
-function unroll(tokens) {
+function unrollSkippingHTMLComments(tokens) {
     let inHTMLComment = false
     /** @type {marked.Token[]} */
     let unrolled = []
