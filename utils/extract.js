@@ -15,12 +15,40 @@ function checklistItems(body) {
     const githubFlavoredMarkdown = true
     const tokens = marked.lexer(body, {gfm: githubFlavoredMarkdown})
 
-    /** @type {ChecklistItem[]} */
-    let items = []
+    return unrollSkippingHTMLComments(tokens).flatMap(token => checkableItem(token))
+}
+
+/**
+ * @param {marked.TokensList} tokens
+ * @returns {marked.Token[]}
+ */
+function unrollSkippingHTMLComments(tokens) {
+    let inHTMLComment = false
+    /** @type {marked.Token[]} */
+    let unrolled = []
     marked.walkTokens(tokens, token => {
-        items = items.concat(checkableItem(token))
+        const htmlComment = detectHTMLComment(token)
+        if (htmlComment.start) inHTMLComment = true
+        if (inHTMLComment) {
+            if (htmlComment.end) inHTMLComment = false
+        } else {
+            unrolled = unrolled.concat(token)
+        }
     })
-    return items
+    return unrolled
+}
+
+/**
+ * @param {marked.Token} token 
+ * @returns {{start: boolean; end: boolean}}
+ */
+function detectHTMLComment(token) {
+    const startIndex = token.raw.lastIndexOf('<!--')
+    const endIndex = token.raw.indexOf('-->', startIndex)
+    return {
+        start: (token.type === 'html' || token.type === 'text') && startIndex >= 0,
+        end: endIndex >= 0,
+    }
 }
 
 /**
