@@ -35,6 +35,7 @@ function unroll(tokens) {
             unrolled = unrolled.concat(token)
         }
     })
+    console.log({unrolled})
     return unrolled
 }
 
@@ -43,9 +44,11 @@ function unroll(tokens) {
  * @returns {{start: boolean; end: boolean}}
  */
 function detectHTMLComment(token) {
+    const startIndex = token.raw.lastIndexOf('<!--')
+    const endIndex = token.raw.indexOf('-->', startIndex)
     return {
-        start: token.type === 'html' && token.raw.startsWith('<!--'),
-        end: token.raw.includes('-->')
+        start: (token.type === 'html' || token.type === 'text') && startIndex >= 0,
+        end: endIndex >= 0,
     }
 }
 
