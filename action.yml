@@ -9,5 +9,5 @@ inputs:
     required: false
     default: "https://github.com/Shopify/task-list-checker#in-a-pull-request"
 runs:
-  using: "node12"
+  using: "node16"
   main: "index.js"
