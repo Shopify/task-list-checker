@@ -21,6 +21,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+This Action will skip processing any Dependabot pull request, but the Action is still ran. To save from actually running the Action at all, you can add the following to the `task-list-checker` config under `runs-on`:
+
+```yml
+if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
+```
+
 In some cases, you may want to point PR authors toward additional documentation about checklist best practices for that repo. To do that, add a `readme-url` parameter underneath the `github-token` parameter. This will make `task-list-checker`'s "Details" link point toward your custom docs url.
 
 The `readme-url` parameter is optional. If omitted, the "Details" link will default to pointing toward this README file.
