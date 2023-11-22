@@ -22,7 +22,7 @@ async function reportChecklistCompletion({githubToken, readmeURL: target_url, ru
     const pr = github.context.payload.pull_request
 
     // We return here because we want to skip Dependabot PRs silently.
-    if (github.context.actor == 'dependabot[bot]') {
+    if (pr.user.login == 'dependabot[bot]') {
         console.log("Skipping dependabot PR")
         return
     }
