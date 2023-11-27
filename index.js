@@ -14,12 +14,8 @@ function getInput(name) {
   return value
 }
 
-try {
-  run.reportChecklistCompletion({
-    githubToken: getInput('github-token'),
-    readmeURL: getInput('readme-url'),
-    rule: tagging.rule({skip: ['POST-MERGE:', 'N/A']})
-  })
-} catch (error) {
-  core.setFailed(error.message)
-}
+run.reportChecklistCompletion({
+  githubToken: getInput('github-token'),
+  readmeURL: getInput('readme-url'),
+  rule: tagging.rule({skip: ['POST-MERGE:', 'N/A']})
+}).catch(error => core.setFailed(error.message));
